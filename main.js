@@ -8,7 +8,6 @@ const lang = {
 	ay: "マイマラ語",
 	az: "アゼルバイジャン語",
 	bm: "バンバラ語",
-	em: "バスク語",
 	be: "ベラルーシ語",
 	bn: "ベンガル語",
 	bho: "ボージュプリー語",
@@ -484,6 +483,10 @@ function nextTranslate(i = 0) {
 		jasc.acq(".langData", baseElm)[0].textContent = lanStr;
 
 		if (isError) {
+			if (now_lang[i + 1] == "en") {
+				jasc.acq("#doTranslate").disabled = false;
+				return;
+			}
 			// エラーの場合、"en"を追加して回避する
 			now_lang.splice(i + 1, 0, "en");
 			updateTable();
