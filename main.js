@@ -355,6 +355,10 @@ jasc.on("DOMContentLoaded", function () {
 
 	jasc.acq("#doTranslate").addEventListener("click", function () {
 		jasc.acq("#doTranslate").disabled = true;
+		let cards = jasc.acq(`.card:has(.transRoute)`);
+		for (let i = 0; i < cards.length; i++) {
+			cards[i].classList.add("transing");
+		}
 		nextTranslate();
 	});
 });
@@ -419,6 +423,7 @@ function nextTranslate(i = 0) {
 		jasc.acq(".transRoute", baseElm)[0].value = s;
 		jasc.acq(".oldLang", baseElm)[0].textContent = now_lang[i];
 		jasc.acq(".newLang", baseElm)[0].textContent = now_lang[i + 1];
+		baseElm.classList.remove("transing");
 		nextTranslate(i + 1);
 	});
 }

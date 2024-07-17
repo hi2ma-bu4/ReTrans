@@ -159,6 +159,10 @@ tr:first-child .ud a:first-child, tr:last-child .ud a:last-child {
 	width: 100%;
 }
 
+.transing, .transing * {
+	background-color: #eee;
+}
+
 #lang-form {
 	display: flex;
 	flex-direction: row;
