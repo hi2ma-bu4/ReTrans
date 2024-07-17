@@ -144,7 +144,7 @@ const pref_lang = [
     "gd",
 ];
 
-const now_lang = ["ja", "en"];
+const now_lang = ["ja", "en", "gd", "az", "lo", "ur", "yo", "ko", "ar", "is", "gd", "lb", "ur", "yi", "vi", "be", "de", "rw", "sl", "ny", "zh-CN", "ja"];
 
 const sampleTexts = [
 	{
