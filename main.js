@@ -412,7 +412,9 @@ function nextTranslate(i = 0) {
 		return;
 	}
 	if (now_lang[i] == now_lang[i + 1]) {
-		nextTranslate(i + 1);
+		now_lang.splice(i + 1, 1);
+		updateTable();
+		nextTranslate(i);
 		return;
 	}
 	let str;
