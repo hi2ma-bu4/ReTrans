@@ -411,21 +411,47 @@ function nextTranslate(i = 0) {
 		jasc.acq("#doTranslate").disabled = false;
 		return;
 	}
+	if (now_lang[i] == now_lang[i + 1]) {
+		nextTranslate(i + 1);
+		return;
+	}
 	let str;
 	if (i == 0) {
 		str = jasc.acq("#baseText").value;
 	} else {
 		str = jasc.acq(`#transCard${i} .transRoute`)[0].value;
+		console.log(str);
 	}
 	const par = jasc.acq("#translates");
-	googleTranslate(str, now_lang[i + 1], now_lang[i]).then((s) => {
+	googleTranslate(str, now_lang[i + 1], now_lang[i]).then(setPlace);
+	return;
+	function setPlace(s) {
+		if (now_lang[i] == now_lang[i + 1]) {
+			jasc.acq("#doTranslate").disabled = false;
+			return;
+		}
+		let em;
+		[s, em] = s;
 		const baseElm = getTextarea(`transCard${i + 1}`, par);
 		jasc.acq(".transRoute", baseElm)[0].value = s;
-		jasc.acq(".oldLang", baseElm)[0].textContent = now_lang[i];
-		jasc.acq(".newLang", baseElm)[0].textContent = now_lang[i + 1];
-		baseElm.classList.remove("transing");
-		nextTranslate(i + 1);
-	});
+		let lanStr = `${now_lang[i]} → ${now_lang[i + 1]}`;
+		console.log(em);
+		let isError = false;
+		if (em != "null") {
+			lanStr += ` (${em})`;
+			isError = true;
+		}
+		jasc.acq(".langData", baseElm)[0].textContent = lanStr;
+
+		if (isError) {
+			// エラーの場合、"en"を追加して回避する
+			now_lang.splice(i + 1, 0, "en");
+			updateTable();
+			googleTranslate(str, now_lang[i + 1], now_lang[i]).then(setPlace);
+		} else {
+			nextTranslate(i + 1);
+		}
+	}
 }
 
 function getTextarea(id, par = document.body) {
@@ -462,7 +488,7 @@ function googleTranslate(str, target = "en", source = "") {
 				console.log("送信成功です");
 				res.json()
 					.then((res) => {
-						resolve(decodeURIComponent(res.data.content));
+						resolve([decodeURIComponent(res.data.content), decodeURIComponent(res.data.errMes)]);
 					})
 					.catch((err) => {
 						console.error(err);
