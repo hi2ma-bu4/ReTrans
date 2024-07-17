@@ -420,7 +420,6 @@ function nextTranslate(i = 0) {
 		str = jasc.acq("#baseText").value;
 	} else {
 		str = jasc.acq(`#transCard${i} .transRoute`)[0].value;
-		console.log(str);
 	}
 	const par = jasc.acq("#translates");
 	googleTranslate(str, now_lang[i + 1], now_lang[i]).then(setPlace);
@@ -435,7 +434,6 @@ function nextTranslate(i = 0) {
 		const baseElm = getTextarea(`transCard${i + 1}`, par);
 		jasc.acq(".transRoute", baseElm)[0].value = s;
 		let lanStr = `${now_lang[i]} → ${now_lang[i + 1]}`;
-		console.log(em);
 		let isError = false;
 		if (em != "null") {
 			lanStr += ` (${em})`;
