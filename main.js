@@ -144,7 +144,7 @@ const pref_lang = [
     "gd",
 ];
 
-const now_lang = ["ja", "en", "gd", "az", "lo", "ur", "yo", "ko", "ar", "is", "gd", "lb", "ur", "yi", "vi", "be", "de", "rw", "sl", "ny", "zh-CN", "ja"];
+const now_lang = ["ja", "en", "ja"];
 
 const sampleTexts = [
 	{
@@ -385,6 +385,18 @@ jasc.on("DOMContentLoaded", function () {
 		});
 	}
 
+	const urlLang = location.search.replace(/^\?/, "").split("&");
+	let pushFlag = false;
+	for (let i = 0, li = urlLang.length; i < li; i++) {
+		if (lang[urlLang[i]]) {
+			if (!pushFlag) {
+				now_lang.splice(0, now_lang.length);
+				pushFlag = true;
+			}
+			now_lang.push(urlLang[i]);
+		}
+	}
+
 	jasc.acq("#lang-form [type=button]")[0].addEventListener("click", function () {
 		now_lang.push(jasc.acq("#trans-lang").value);
 		updateTable();
@@ -447,7 +459,7 @@ function removeLang(from) {
 
 function nextTranslate(i = 0) {
 	if (i + 1 >= now_lang.length) {
-		jasc.acq("#doTranslate").disabled = false;
+		endTrans();
 		return;
 	}
 	if (now_lang[i] == now_lang[i + 1]) {
@@ -467,7 +479,7 @@ function nextTranslate(i = 0) {
 	return;
 	function setPlace(s) {
 		if (now_lang[i] == now_lang[i + 1]) {
-			jasc.acq("#doTranslate").disabled = false;
+			endTrans();
 			return;
 		}
 		let em;
@@ -484,7 +496,7 @@ function nextTranslate(i = 0) {
 
 		if (isError) {
 			if (now_lang[i + 1] == "en") {
-				jasc.acq("#doTranslate").disabled = false;
+				endTrans();
 				return;
 			}
 			// エラーの場合、"en"を追加して回避する
@@ -496,6 +508,12 @@ function nextTranslate(i = 0) {
 			nextTranslate(i + 1);
 		}
 	}
+}
+
+function endTrans() {
+	jasc.acq("#doTranslate").disabled = false;
+	let p = now_lang.join("&");
+	jasc.historyPush(`${location.protocol}//${location.host}${location.pathname}?${p}`);
 }
 
 function getTextarea(id, par = document.body) {
