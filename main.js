@@ -354,6 +354,7 @@ jasc.on("DOMContentLoaded", function () {
 	updateTable();
 
 	jasc.acq("#doTranslate").addEventListener("click", function () {
+		jasc.acq("#doTranslate").disabled = true;
 		nextTranslate();
 	});
 });
@@ -403,6 +404,7 @@ function removeLang(from) {
 
 function nextTranslate(i = 0) {
 	if (i + 1 >= now_lang.length) {
+		jasc.acq("#doTranslate").disabled = false;
 		return;
 	}
 	let str;

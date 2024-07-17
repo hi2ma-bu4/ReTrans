@@ -181,6 +181,11 @@ tr:first-child .ud a:first-child, tr:last-child .ud a:last-child {
 	color: #fff;
 }
 
+#doTranslate:disabled {
+	background-color: #eee;
+	cursor: not-allowed;
+}
+
 #translates {
 	width: 100%;
 }
