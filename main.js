@@ -447,6 +447,7 @@ function nextTranslate(i = 0) {
 			updateTable();
 			googleTranslate(str, now_lang[i + 1], now_lang[i]).then(setPlace);
 		} else {
+			baseElm.classList.remove("transing");
 			nextTranslate(i + 1);
 		}
 	}
